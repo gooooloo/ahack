@@ -7,27 +7,28 @@ ahackImpl() {
     return
   fi
 
-  local mydir=${0:a:h}
-  case $1 in
-    install)
-      echo 'export AHACK_HOME='$mydir >> ~/.zshrc # for ahack
-      echo 'export PATH=$AHACK_HOME:$PATH' >> ~/.zshrc # for ahack
-      echo 'fpath=($AHACK_HOME $fpath)' >> ~/.zshrc # for auto completion
-      echo 'now go edit ~/.zshrc and move the last 3 lines above "source $ZSH/oh-my-zsh.sh"' # TODO: can it be more automatically?
-      ;;
+  local v=$1
+  local p=/data/data/$v/shared_prefs/
 
-    *)
-      local nextCmd=$mydir/$1/ahack
+  if (( $# == 1 )) then
+    adb shell ls -l $p
+    return
+  fi
 
-      if [[ -a $nextCmd ]] then
-        shift
-        $nextCmd "$@"
-      else
-        echo "can't handle argument 1 : " $1
-      fi
-      
-      ;;
-  esac
+  v=$2
+  p=$p/$v
+  if (( $# == 2 )) then
+    adb shell cat $p
+    return
+  fi
+
+  v=$3
+  if (( $# == 3 )) then
+    adb shell cat $p | grep $v
+    return
+  fi
+
+  echo 'nothing to do'
 }
 
 ahackImpl $@
