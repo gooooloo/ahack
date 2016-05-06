@@ -1,5 +1,51 @@
 #!/bin/zsh
 
+installImpl() {
+  echo 'export AHACK_HOME='$mydir >> ~/.zshrc # for ahack
+  echo 'export PATH=$AHACK_HOME:$PATH' >> ~/.zshrc # for ahack
+  echo 'fpath=($AHACK_HOME $fpath)' >> ~/.zshrc # for auto completion
+  echo 'now go edit ~/.zshrc and move the last 3 lines above "source $ZSH/oh-my-zsh.sh"' # TODO: can it be more automatically?
+}
+
+local aliasFileName=.alias
+aliasImpl() {
+  if [[ ! -a $aliasFileName ]] then
+    touch $aliasFileName
+  fi
+
+  if (( $# == 1 )) then
+    cat $aliasFileName
+  elif (( $# == 2)) then
+    #TODO: error if $2 has blank
+    cat $aliasFileName | grep $2
+  else
+    #TODO: error if $2 has blank
+    #TODO: error if $3 has blank
+    sed -i '' -e '/^'$2'=/d' $aliasFileName # delete original ones
+    echo $2'='$3 >> $aliasFileName # write alias
+  fi
+}
+
+nextCmdImpl() {
+  local subdir=$mydir/$1
+  if [[ ! -a $subdir ]] then
+    subdir=$mydir/$(cat $aliasFileName | cut -d'=' -f2-)
+  fi
+  if [[ ! -a $subdir ]] then
+    echo 'no such folder:' $subdir
+    return
+  fi
+
+  local nextCmd=$subdir/ahack
+  if [[ ! -a $nextCmd ]] then
+    echo 'no such file:' $nextCmd
+    return
+  else
+    shift
+    $nextCmd "$@"
+  fi
+}
+
 ahackImpl() {
 
   if (( $# == 0 )) then
@@ -10,22 +56,13 @@ ahackImpl() {
   local mydir=${0:a:h}
   case $1 in
     install)
-      echo 'export AHACK_HOME='$mydir >> ~/.zshrc # for ahack
-      echo 'export PATH=$AHACK_HOME:$PATH' >> ~/.zshrc # for ahack
-      echo 'fpath=($AHACK_HOME $fpath)' >> ~/.zshrc # for auto completion
-      echo 'now go edit ~/.zshrc and move the last 3 lines above "source $ZSH/oh-my-zsh.sh"' # TODO: can it be more automatically?
+      installImpl "$@"
       ;;
-
+    alias)
+      aliasImpl "$@"
+      ;;
     *)
-      local nextCmd=$mydir/$1/ahack
-
-      if [[ -a $nextCmd ]] then
-        shift
-        $nextCmd "$@"
-      else
-        echo "can't handle argument 1 : " $1
-      fi
-      
+      nextCmdImpl "$@"
       ;;
   esac
 }
