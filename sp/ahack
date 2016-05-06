@@ -1,0 +1,33 @@
+#!/bin/zsh
+
+ahackImpl() {
+
+  if (( $# == 0 )) then
+    echo 'arguments needed.'
+    return
+  fi
+
+  local mydir=${0:a:h}
+  case $1 in
+    install)
+      echo 'export AHACK_HOME='$mydir >> ~/.zshrc # for ahack
+      echo 'export PATH=$AHACK_HOME:$PATH' >> ~/.zshrc # for ahack
+      echo 'fpath=($AHACK_HOME $fpath)' >> ~/.zshrc # for auto completion
+      echo 'now go edit ~/.zshrc and move the last 3 lines above "source $ZSH/oh-my-zsh.sh"' # TODO: can it be more automatically?
+      ;;
+
+    *)
+      local nextCmd=$mydir/$1/ahack
+
+      if [[ -a $nextCmd ]] then
+        shift
+        $nextCmd "$@"
+      else
+        echo "can't handle argument 1 : " $1
+      fi
+      
+      ;;
+  esac
+}
+
+ahackImpl $@
