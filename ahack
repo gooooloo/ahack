@@ -1,13 +1,18 @@
 #!/bin/zsh
 
+local mydir=${0:a:h}
+local aliasFileName=.alias
 installImpl() {
-  echo 'export AHACK_HOME='$mydir >> ~/.zshrc # for ahack
-  echo 'export PATH=$AHACK_HOME:$PATH' >> ~/.zshrc # for ahack
-  echo 'fpath=($AHACK_HOME $fpath)' >> ~/.zshrc # for auto completion
-  echo 'now go edit ~/.zshrc and move the last 3 lines above "source $ZSH/oh-my-zsh.sh"' # TODO: can it be more automatically?
+  local t=~/.oh-my-zsh/plugins/ahack
+  mkdir -p $t
+  t=$t/ahack.plugin.zsh
+  echo 'alias k=ahack' > $t
+  echo 'export AHACK_HOME='$mydir >> $t
+  echo 'export PATH=$AHACK_HOME:$PATH' >> $t
+  echo 'fpath=($AHACK_HOME $fpath)' >> $t
+  echo 'now go edit ~/.zshrc and add ahack plguin'
 }
 
-local aliasFileName=.alias
 aliasImpl() {
   if [[ ! -a $aliasFileName ]] then
     touch $aliasFileName
@@ -53,7 +58,6 @@ ahackImpl() {
     return
   fi
 
-  local mydir=${0:a:h}
   case $1 in
     install)
       installImpl "$@"
