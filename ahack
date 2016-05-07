@@ -1,37 +1,8 @@
 #!/bin/zsh
 
-local mydir=${0:a:h}
-local aliasFileName=.alias
-installImpl() {
-  local t=~/.oh-my-zsh/plugins/ahack
-  mkdir -p $t
-  t=$t/ahack.plugin.zsh
-  echo 'alias k=ahack' > $t
-  echo 'export AHACK_HOME='$mydir >> $t
-  echo 'export PATH=$AHACK_HOME:$PATH' >> $t
-  echo 'fpath=($AHACK_HOME $fpath)' >> $t
-  echo 'now go edit ~/.zshrc and add ahack plguin'
-}
-
-aliasImpl() {
-  if [[ ! -a $aliasFileName ]] then
-    touch $aliasFileName
-  fi
-
-  if (( $# == 1 )) then
-    cat $aliasFileName
-  elif (( $# == 2)) then
-    #TODO: error if $2 has blank
-    cat $aliasFileName | grep $2
-  else
-    #TODO: error if $2 has blank
-    #TODO: error if $3 has blank
-    sed -i '' -e '/^'$2'=/d' $aliasFileName # delete original ones
-    echo $2'='$3 >> $aliasFileName # write alias
-  fi
-}
-
 nextCmdImpl() {
+  local mydir=${0:a:h}
+  local aliasFileName=.alias
   local subdir=$mydir/$1
   if [[ ! -a $subdir ]] then
     subdir=$mydir/$(cat $aliasFileName | cut -d'=' -f2-)
@@ -58,17 +29,7 @@ ahackImpl() {
     return
   fi
 
-  case $1 in
-    install)
-      installImpl "$@"
-      ;;
-    alias)
-      aliasImpl "$@"
-      ;;
-    *)
-      nextCmdImpl "$@"
-      ;;
-  esac
+  nextCmdImpl "$@"
 }
 
 ahackImpl $@

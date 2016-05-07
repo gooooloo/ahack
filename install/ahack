@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+local mydir=${0:a:h}/..
+installImpl() {
+  local t=~/.oh-my-zsh/plugins/ahack
+  mkdir -p $t
+  t=$t/ahack.plugin.zsh
+  echo 'alias k=ahack' > $t
+  echo 'export AHACK_HOME='$mydir >> $t
+  echo 'export PATH=$AHACK_HOME:$PATH' >> $t
+  echo 'fpath=($AHACK_HOME $fpath)' >> $t
+  echo 'now go edit ~/.zshrc and add ahack plguin'
+}
+
+installImpl
