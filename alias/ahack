@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-local mydir=${0:a:h}
+local mydir=`dirname $0`
 aliasImpl() {
-  local aliasFileName=.alias
+  local aliasFileName=$mydir/.alias
   if [[ ! -a $aliasFileName ]] then
     touch $aliasFileName
   fi
