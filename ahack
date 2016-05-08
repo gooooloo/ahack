@@ -3,7 +3,7 @@
 local mydir=`dirname $0`
 nextCmdImpl() {
   local aliasFileName=.alias
-  local subdir=$mydir/$1
+  local subdir=$mydir/cmd-$1
   if [[ ! -a $subdir ]] then
     subdir=$mydir/$(cat $aliasFileName | cut -d'=' -f2-)
   fi
@@ -12,13 +12,13 @@ nextCmdImpl() {
     return
   fi
 
-  local nextCmd=$subdir/ahack
+  local nextCmd=$subdir/cmd
   if [[ ! -a $nextCmd ]] then
     echo 'no such file:' $nextCmd
     return
   else
     shift
-    $nextCmd "$@"
+    source $nextCmd "$@"
   fi
 }
 
