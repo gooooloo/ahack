@@ -1,5 +1,17 @@
 #!/bin/zsh
 
+# method to call 'cmd' in cmd-***/p-cmd-***/alias directories.
+# argument 1: the absolute path of current folder
+# argument 2: the sub-command
+# argument 3: the arguments for sub-command
+# 
+# example: 'subcmd /tmp/abc subcmd1 x y z' will try to execute
+#   - /tmp/abc/cmd-subcmd1/cmd x y z
+# if ／tmp/abc/cmd-subcmd1 does not exist, then fallback to execute
+#   - /tmp/abc/p-cmd-subcmd1/cmd x y z
+# if /tmp/abc/p-cmd-subcmd1 does not exist neither, then fallback to 
+#   - alias
+#
 subcmd() {
   local mydir=$1
   local aliasFileName=.alias
@@ -26,9 +38,4 @@ subcmd() {
   fi
 }
 
-if (( $# == 0 )) then
-  echo 'arguments needed.'
-  return
-fi
-
-subcmd `dirname $0` "$@"
+source `dirname $0`/cmd "$@"
