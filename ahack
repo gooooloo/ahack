@@ -1,11 +1,11 @@
 #!/bin/zsh
 
-local mydir=`dirname $0`
-nextCmdImpl() {
+subcmd() {
+  local mydir=$1
   local aliasFileName=.alias
-  local subdir=$mydir/cmd-$1
+  local subdir=$mydir/cmd-$2
   if [[ ! -a $subdir ]] then
-    subdir=$mydir/p-cmd-$1
+    subdir=$mydir/p-cmd-$2
   fi
   if [[ ! -a $subdir ]] then
     subdir=$mydir/$(cat $aliasFileName | cut -d'=' -f2-)
@@ -21,18 +21,14 @@ nextCmdImpl() {
     return
   else
     shift
+    shift
     source $nextCmd "$@"
   fi
 }
 
-ahackImpl() {
+if (( $# == 0 )) then
+  echo 'arguments needed.'
+  return
+fi
 
-  if (( $# == 0 )) then
-    echo 'arguments needed.'
-    return
-  fi
-
-  nextCmdImpl "$@"
-}
-
-ahackImpl $@
+subcmd `dirname $0` "$@"
