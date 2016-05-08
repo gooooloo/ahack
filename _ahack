@@ -1,0 +1,4 @@
+#mark=') # marked for ahack complete'
+#words=$(cat ahack | grep $mark | cut -d')' -f1 | tr -d ' \t\r' | tr '\n' ' ')
+ 
+_arguments "1: :(TODO)"

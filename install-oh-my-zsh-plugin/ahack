@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+local mydir=`dirname $0`
+installImpl() {
+  local t=~/.oh-my-zsh/plugins/ahack
+  mkdir -p $t
+
+  local p=$t/ahack.plugin.zsh
+  echo 'alias k=ahack' > $p
+  echo 'export AHACK_HOME='$mydir'/../' >> $p
+  echo 'export PATH=$AHACK_HOME:$PATH' >> $p
+
+  local c=$t/_ahack
+  echo '#compdef ahack' > $c
+  echo 'local f=$AHACK_HOME/_ahack' >> $c
+  echo 'if [[ -a $f ]]; then' >> $c
+  echo '  source $f "$@"' >> $c
+  echo 'fi' >> $c
+
+  echo 'plugin installed in' $t
+  echo 'Yet you need to manually enable "ahack" plugin in ~/.zshrc'
+}
+
+installImpl
