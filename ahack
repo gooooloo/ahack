@@ -5,6 +5,9 @@ nextCmdImpl() {
   local aliasFileName=.alias
   local subdir=$mydir/cmd-$1
   if [[ ! -a $subdir ]] then
+    subdir=$mydir/p-cmd-$1
+  fi
+  if [[ ! -a $subdir ]] then
     subdir=$mydir/$(cat $aliasFileName | cut -d'=' -f2-)
   fi
   if [[ ! -a $subdir ]] then
