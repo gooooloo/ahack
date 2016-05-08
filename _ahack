@@ -2,4 +2,5 @@
 
 typeset -A opt_args
  
-source `dirname $0`/_cmd $words[2,-1]
+local n=`expr ${#words} - 1`
+source `dirname $0`/_cmd $words[2,n]
