@@ -14,7 +14,7 @@ installImpl() {
   echo '#compdef ahack' > $c
   echo 'local f=$AHACK_HOME/_ahack' >> $c
   echo 'if [[ -a $f ]]; then' >> $c
-  echo '  source $f "$@"' >> $c
+  echo '  source $f' >> $c
   echo 'fi' >> $c
 
   echo 'plugin installed in' $t
