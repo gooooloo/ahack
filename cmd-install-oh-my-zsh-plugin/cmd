@@ -6,9 +6,12 @@ installImpl() {
   mkdir -p $t
 
   local p=$t/ahack.plugin.zsh
-  echo 'alias k=ahack' > $p
-  echo 'export AHACK_HOME='$mydir'/../' >> $p
+  echo 'export AHACK_HOME=/home/qidu/github/ahack' > $p
   echo 'export PATH=$AHACK_HOME:$PATH' >> $p
+  echo '# using . to keep shell not changed' >> $p
+  echo 'see http://stackoverflow.com/questions/255414' >> $p
+  echo 'alias ahack=". $AHACK_HOME/ahack"' >> $p
+  echo 'alias k=ahack' >> $p
 
   local c=$t/_ahack
   echo '#compdef ahack' > $c
