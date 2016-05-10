@@ -1,35 +1,10 @@
 #!/bin/zsh
 
-compSubCmd() {
-  for dir in $1/cmd-*/; do
-    local bn=`basename $dir`
-    bn=$(echo `echo $bn | cut -c 5-`':')
-    if [[ -a $dir/desc ]]; then
-      local desc=''
-      desc=$(cat $dir/desc)
-      bn=$(echo $bn $desc)
-    fi
-    subCmds=($subCmds $bn)
-  done
-
-  for dir in $1/p-cmd-*/; do
-    local bn=`basename $dir`
-    bn=$(echo `echo $bn | cut -c 7-`':')
-    if [[ -a $dir/desc ]]; then
-      local desc=''
-      desc=$(cat $dir/desc)
-      bn=$(echo $bn $desc)
-    fi
-    subCmds=($subCmds $bn)
-  done
-
-  #TODO: for alias
-}
-
 if (( $# == 0 )); then
-  local subCmds;
-  subCmds=()
-  compSubCmd `dirname $0`
+  local subCmds; subCmds=()
+
+  comp_sub_cmds `dirname $0`
+
   _describe -t subCmds 'command' subCmds && ret=0
   subCmds=()
 fi

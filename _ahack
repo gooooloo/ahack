@@ -1,6 +1,28 @@
 #!/bin/zsh
 
 typeset -A opt_args
+
+# example: "_comp_a_cmd /tmp/abc p-cmd- 6", and there is a p-cmd-def folder
+_comp_a_cmd() {
+  local dir=$1 # /tmp/abc
+  local prefix=$2 # p-cmd-
+  local start=`expr $3 + 1` # 7, TODO: get it from $prefix
+  for cmddir in $dir/$prefix*/; do
+    local s=$(echo `basename $cmddir`':' | cut -c $start-) # def:
+    if [[ -a $cmddir/desc ]]; then
+      local desc=''
+      desc=$(cat $cmddir/desc)
+      s=$(echo $s$desc) # def:this is desc
+    fi
+    subCmds=($subCmds $s)
+  done
+}
+
+comp_sub_cmds() {
+  _comp_a_cmd $1 'cmd-' 4
+  _comp_a_cmd $1 'p-cmd-' 6
+  _comp_a_cmd $1 'a-cmd-' 6
+}
  
 local n=`expr ${#words} - 1`
 source `dirname $0`/_cmd $words[2,n]
