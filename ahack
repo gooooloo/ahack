@@ -17,6 +17,9 @@ subcmd() {
     subdir=$mydir/p-cmd-$2
   fi
   if [[ ! -a $subdir ]] then
+    subdir=$mydir/a-cmd-$2
+  fi
+  if [[ ! -a $subdir ]] then
     echo 'no such folder:' $subdir
     return
   fi
