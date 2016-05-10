@@ -2,6 +2,26 @@
 
 typeset -A opt_args
 
+# method to comp sub_cmd
+# argument 1: the absolute path of current folder
+# argument 2: the sub-cmd
+#
+comp_by_sub_cmd() {
+  local sub_cmd=`source $AHACK_HOME/util/subcmd $1 $2`
+
+  if [[ ! -a $sub_cmd ]] then
+    echo 'no such file:' $sub_cmd
+    return
+  fi
+
+  local _cmd=`dirname $sub_cmd`/_cmd
+  if [[ -a $_cmd ]] then
+    shift
+    shift
+    source $_cmd "$@"
+  fi
+}
+
 # example: "_comp_a_cmd /tmp/abc p-cmd- 6", and there is a p-cmd-def folder
 _comp_a_cmd() {
   local dir=$1 # /tmp/abc
@@ -18,10 +38,16 @@ _comp_a_cmd() {
   done
 }
 
-comp_sub_cmds() {
+comp_with_sub_cmds() {
+  local subCmds; subCmds=()
+  
   _comp_a_cmd $1 'cmd-' 4
   _comp_a_cmd $1 'p-cmd-' 6
   _comp_a_cmd $1 'a-cmd-' 6
+
+  subCmds=($2 $subCmds)
+
+  _describe -t subCmds 'command' subCmds && ret=0
 }
  
 local n=`expr ${#words} - 1`

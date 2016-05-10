@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+# method to detertermine subcmd in cmd-***/p-cmd-***/a-cmd-*** directories.
+# argument 1: the absolute path of current folder
+# argument 2: the sub-command
+# 
+# example: 'source ./subcmd /tmp/abc def' will try to return path of 
+#   - /tmp/abc/cmd-def/cmd
+# if ／tmp/abc/cmd-def does not exist, then fallback to return path of
+#   - /tmp/abc/p-cmd-def/cmd
+# if ／tmp/abc/p-cmd-def does not exist, then fallback to return path of
+#   - /tmp/abc/a-cmd-def/cmd
+#
+local mydir=$1
+local subdir=$mydir/cmd-$2
+if [[ ! -a $subdir ]] then
+  subdir=$mydir/p-cmd-$2
+fi
+if [[ ! -a $subdir ]] then
+  subdir=$mydir/a-cmd-$2
+fi
+if [[ ! -a $subdir ]] then
+  echo ''
+fi
+
+local subcmd=$subdir/cmd
+if [[ ! -a $subcmd ]] then
+  echo ''
+else
+  echo $subcmd
+fi

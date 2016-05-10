@@ -5,4 +5,4 @@ if (( $# == 0 )) then
   return
 fi
 
-subcmd `dirname $0` "$@"
+call_sub_cmd `dirname $0` "$@"

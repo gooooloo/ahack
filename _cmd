@@ -1,11 +1,13 @@
 #!/bin/zsh
 
 if (( $# == 0 )); then
-  local subCmds; subCmds=()
+  local myCmds; myCmds=()
+  
+  # TODO:add your myCmds here like
+  # myCmds=('hello:world' $myCmds)
 
-  comp_sub_cmds `dirname $0`
-
-  _describe -t subCmds 'command' subCmds && ret=0
-  subCmds=()
+  comp_with_sub_cmds `dirname $0` $myCmds
+else
+  comp_by_sub_cmd `dirname $0` "$@"
 fi
 

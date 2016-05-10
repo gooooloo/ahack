@@ -1,37 +1,24 @@
 #!/bin/zsh
 
-# method to call 'cmd' in cmd-***/p-cmd-*** directories.
+# method to call sub_cmd
 # argument 1: the absolute path of current folder
-# argument 2: the sub-command
-# argument 3: the arguments for sub-command
+# argument 2: the sub-cmd
+# argument 3: the arguments for sub-cmd
 # 
-# example: 'subcmd /tmp/abc subcmd1 x y z' will try to execute
-#   - /tmp/abc/cmd-subcmd1/cmd x y z
-# if ／tmp/abc/cmd-subcmd1 does not exist, then fallback to execute
-#   - /tmp/abc/p-cmd-subcmd1/cmd x y z
+# example: 'source ./call_sub_cmd /tmp/abc def x y z' will try to execute
+#   - $sub_cmd x y z
+# the $sub_cmd is determined by $AHACK_HOME/util/subcmd script
 #
-subcmd() {
-  local mydir=$1
-  local subdir=$mydir/cmd-$2
-  if [[ ! -a $subdir ]] then
-    subdir=$mydir/p-cmd-$2
-  fi
-  if [[ ! -a $subdir ]] then
-    subdir=$mydir/a-cmd-$2
-  fi
-  if [[ ! -a $subdir ]] then
-    echo 'no such folder:' $subdir
-    return
-  fi
+call_sub_cmd() {
+  local sub_cmd=`source $AHACK_HOME/util/subcmd $1 $2`
 
-  local nextCmd=$subdir/cmd
-  if [[ ! -a $nextCmd ]] then
-    echo 'no such file:' $nextCmd
+  if [[ ! -a $sub_cmd ]] then
+    echo 'no such file:' $sub_cmd
     return
   else
-    shift # remove $1:mydir
-    shift # remove $2:subcmd
-    source $nextCmd "$@"
+    shift
+    shift
+    source $sub_cmd "$@"
   fi
 }
 
