@@ -1,0 +1,55 @@
+#!/bin/zsh
+
+local mydir=`dirname $0`
+if (( $# == 0 )); then
+  local subCmds;
+  subCmds=(
+    '--mode'
+  )
+  _describe -t subCmds 'command' subCmds && ret=0
+  return
+fi
+
+if (( $# == 1 )); then
+  local subCmds;
+  subCmds=(
+    'normal:'
+    'private:'
+    'alias:'
+  )
+  _describe -t subCmds 'command' subCmds && ret=0
+  return
+fi
+
+if (( $# == 2 )); then
+  local subCmds;
+  subCmds=(
+    '--sub-cmd'
+  )
+  _describe -t subCmds 'command' subCmds && ret=0
+  return
+fi
+
+if (( $# == 4 )); then
+  if [[ $2 == 'normal' ]]; then
+    local subCmds;
+    subCmds=('--desc')
+    _describe -t subCmds 'command' subCmds && ret=0
+  elif [[ $2 == 'private' ]]; then
+    local subCmds;
+    subCmds=('--desc')
+    _describe -t subCmds 'command' subCmds && ret=0
+  elif [[ $2 == 'alias' ]]; then
+    local subCmds;
+    subCmds=('--target')
+    _describe -t subCmds 'command' subCmds && ret=0
+  fi
+  return
+fi
+
+if (( $# == 5 )); then
+  if [[ $2 == 'alias' ]]; then
+    # TODO
+    comp_with_sub_cmds $(pwd)
+  fi
+fi

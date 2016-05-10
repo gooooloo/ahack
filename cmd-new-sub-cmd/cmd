@@ -1,0 +1,93 @@
+#!/bin/zsh
+
+newFiles() {
+  local dir=$1
+
+  local desc=$2
+  echo $desc > $1/desc
+
+  local cmd=$1/cmd
+  echo '#!/bin/zsh'                        > $cmd
+  echo 'if (( $# == 0 )); then'           >> $cmd
+  echo '  echo "error - argument needed"' >> $cmd
+  echo '  return'                         >> $cmd
+  echo 'fi'                               >> $cmd
+  echo ''                                 >> $cmd
+  echo 'case $1 in'                       >> $cmd
+  echo '# add your codes here'            >> $cmd
+  echo '  *)'                             >> $cmd
+  echo '     subcmd `dirname $0` $@'      >> $cmd
+  echo '     ;;'                          >> $cmd
+  echo 'esac'                             >> $cmd
+
+  local _cmd=$1/_cmd
+  echo '!/bin/zsh'                                  > $_cmd
+  echo ''                                          >> $_cmd
+  echo 'if (( $# == 0 )); then'                    >> $_cmd
+  echo '  local myCmds; myCmds=()'                 >> $_cmd
+  echo ''                                          >> $_cmd
+  echo '  # TODO:add your myCmds here like'        >> $_cmd
+  echo '  # myCmds=('hello:world' $myCmds)'        >> $_cmd
+  echo ''                                          >> $_cmd
+  echo '  comp_with_sub_cmds `dirname $0` $myCmds' >> $_cmd
+  echo 'else'                                      >> $_cmd
+  echo '  comp_by_sub_cmd `dirname $0` "$@"'       >> $_cmd
+  echo 'fi'                                        >> $_cmd
+}
+
+if [[ ! $1 == '--mode' ]]; then
+  echo 'error arg 1'
+  return;
+fi
+
+if [[ ! $2 == 'normal' ]]; then
+  if [[ ! $2 == 'private' ]]; then
+    if [[ ! $2 == 'alias' ]]; then
+      echo 'error arg 2'
+      return;
+    fi
+  fi
+fi
+local mode=$2
+
+if [[ ! $3 == '--sub-cmd' ]]; then
+  echo 'error arg 3'
+  return;
+fi
+local subcmd=$4
+
+local target;
+local desc;
+if  [[ $mode == 'alias' ]]; then
+  if [[ ! $5 == '--target' ]]; then
+    echo 'error arg5'
+    return
+  fi
+  target=$6
+else
+  if [[ ! $5 == '--desc' ]]; then
+    echo 'error arg5'
+    return
+  fi
+  desc=$6
+fi
+
+if [[ $mode == 'normal' ]] then
+  mkdir cmd-$subcmd
+  newFiles cmd-$subcmd $desc
+elif [[ $mode == 'private' ]] then
+  mkdir p-cmd-$subcmd
+  newFiles p-cmd-$subcmd $desc
+elif [[ $mode == 'alias' ]] then
+  if [[ -a cmd-$target ]] then
+    ln -s cmd-$target a-cmd-$subcmd
+  elif [[ -a p-cmd-$target ]] then
+    ln -s p-cmd-$target a-cmd-$subcmd
+  elif [[ -a a-cmd-$target ]] then
+    ln -s a-cmd-$target a-cmd-$subcmd
+  else
+    echo 'error'
+  fi
+else
+  echo 'arg1 should be --normal or --private or --alias'
+fi
