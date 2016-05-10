@@ -26,16 +26,11 @@ compSubCmd() {
   #TODO: for alias
 }
 
-local mydir=`dirname $0`
 if (( $# == 0 )); then
-
   local subCmds;
   subCmds=()
-  compSubCmd $mydir
+  compSubCmd `dirname $0`
   _describe -t subCmds 'command' subCmds && ret=0
   subCmds=()
-
-else
-  echo 'OHHH'
 fi
 
