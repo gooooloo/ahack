@@ -11,3 +11,7 @@ sp_dir_of_pkg() {
 cache_dir_of_pkg()  {
   echo 'data/data/'$1'/cache/'
 }
+
+pkg_list() {
+  adb shell pm list packages | cut -c 9-
+}
