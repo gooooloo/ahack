@@ -21,7 +21,7 @@ newFiles() {
   echo 'esac'                             >> $cmd
 
   local _cmd=$1/_cmd
-  echo '!/bin/zsh'                                  > $_cmd
+  echo '#!/bin/zsh'                                 > $_cmd
   echo ''                                          >> $_cmd
   echo 'if (( $# == 0 )); then'                    >> $_cmd
   echo '  local myCmds; myCmds=()'                 >> $_cmd
