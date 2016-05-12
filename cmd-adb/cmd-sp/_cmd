@@ -2,14 +2,13 @@
 
 if (( $# == 0 )); then
   local myCmds; myCmds=()
-
-  # TODO:add your myCmds here like
-  # myCmds=(hello:world $myCmds)
-
   comp_with_sub_cmds `dirname $0` $myCmds
+
 elif (( $# == 1 )); then
   local p=$(sp_dir_of_pkg $1)
-  echo `adb shell ls $p`
+  local myCmds; myCmds=(`adb shell ls $p`)
+  comp_with_sub_cmds `dirname $0` $myCmds
+
 else
   comp_by_sub_cmd `dirname $0` "$@"
 fi
