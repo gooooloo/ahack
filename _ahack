@@ -10,7 +10,6 @@ comp_by_sub_cmd() {
   local sub_cmd=`source $AHACK_HOME/util/subcmd $1 $2`
 
   if [[ ! -a $sub_cmd ]] then
-    echo 'no such file:' $sub_cmd
     return
   fi
 
