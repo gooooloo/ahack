@@ -16,7 +16,7 @@ newFiles() {
   echo 'case $1 in'                       >> $cmd
   echo '# add your codes here'            >> $cmd
   echo '  *)'                             >> $cmd
-  echo '     subcmd `dirname $0` $@'      >> $cmd
+  echo '     call_sub_cmd `dirname $0` $@'      >> $cmd
   echo '     ;;'                          >> $cmd
   echo 'esac'                             >> $cmd
 
