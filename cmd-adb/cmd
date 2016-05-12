@@ -1,0 +1,14 @@
+#!/bin/zsh
+if (( $# == 0 )); then
+  echo "error - argument needed"
+  return
+fi
+
+source `dirname $0`/util/adb_common_functions.zsh
+
+case $1 in
+# add your codes here
+  *)
+     call_sub_cmd `dirname $0` $@
+     ;;
+esac

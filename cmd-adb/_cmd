@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+source `dirname $0`/util/adb_common_functions.zsh
+
+if (( $# == 0 )); then
+  local myCmds; myCmds=()
+
+  # TODO:add your myCmds here like
+  # myCmds=(hello:world $myCmds)
+
+  comp_with_sub_cmds `dirname $0` $myCmds
+else
+  comp_by_sub_cmd `dirname $0` "$@"
+fi

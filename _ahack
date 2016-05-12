@@ -45,7 +45,8 @@ comp_with_sub_cmds() {
   _comp_a_cmd $1 'p-cmd-' 6
   _comp_a_cmd $1 'a-cmd-' 6
 
-  subCmds=($2 $subCmds)
+  shift
+  subCmds=($@ $subCmds)
 
   _describe -t subCmds 'command' subCmds && ret=0
 }
