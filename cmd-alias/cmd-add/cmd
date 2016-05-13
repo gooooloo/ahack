@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+if (( $# == 0 )); then
+  echo '2 more argument needed'
+  return
+fi
+if (( $# == 1 )); then
+  echo '1 more argument needed'
+  return
+fi
+if (( $# == 2 )); then
+  if [[ -a $aliasFile ]]; then
+    sed -i '' -e '/^'$1'=/d' $aliasFile
+  fi
+  echo $1'='$2 >> $aliasFile
+fi
