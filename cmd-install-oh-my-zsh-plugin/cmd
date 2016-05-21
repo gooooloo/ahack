@@ -1,28 +1,25 @@
 #!/bin/zsh
 
 local mydir=`dirname $0`
-installImpl() {
-  local t=~/.oh-my-zsh/plugins/ahack
-  mkdir -p $t
+mydir=`source $mydir/../util/simplify_path.zsh $mydir/..`
+local t=~/.oh-my-zsh/plugins/ahack
+mkdir -p $t
 
-  local p=$t/ahack.plugin.zsh
+local p=$t/ahack.plugin.zsh
 
-  echo 'export AHACK_HOME='$mydir'/../' > $p
-  echo 'export PATH=$AHACK_HOME:$PATH' >> $p
-  echo '# using . to keep shell not changed' >> $p
-  echo '# see http://stackoverflow.com/questions/255414' >> $p
-  echo 'alias ahack=". $AHACK_HOME/ahack"' >> $p
-  echo 'alias k=ahack' >> $p
+echo 'export AHACK_HOME='$mydir > $p
+echo 'export PATH=$AHACK_HOME:$PATH' >> $p
+echo '# using . to keep shell not changed' >> $p
+echo '# see http://stackoverflow.com/questions/255414' >> $p
+echo 'alias ahack=". $AHACK_HOME/ahack"' >> $p
+echo 'alias k=ahack' >> $p
 
-  local c=$t/_ahack
-  echo '#compdef ahack' > $c
-  echo 'local f=$AHACK_HOME/_ahack' >> $c
-  echo 'if [[ -a $f ]]; then' >> $c
-  echo '  source $f' >> $c
-  echo 'fi' >> $c
+local c=$t/_ahack
+echo '#compdef ahack' > $c
+echo 'local f=$AHACK_HOME/_ahack' >> $c
+echo 'if [[ -a $f ]]; then' >> $c
+echo '  source $f' >> $c
+echo 'fi' >> $c
 
-  echo 'plugin installed in' $t
-  echo 'Yet you need to manually enable "ahack" plugin in ~/.zshrc'
-}
-
-installImpl
+echo 'plugin installed in' $t
+echo 'Yet you need to manually enable "ahack" plugin in ~/.zshrc'
