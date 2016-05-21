@@ -1,12 +1,7 @@
 #!/bin/zsh
 
 if (( $# == 0 )); then
-  local myCmds; myCmds=()
-
-  # TODO:add your myCmds here like
-  # myCmds=(hello:world $myCmds)
-
-  comp_with_sub_cmds `dirname $0` $myCmds
+  comp_with_sub_cmds  $AHACK_HOME
 else
-  comp_by_sub_cmd `dirname $0` "$@"
+  comp_by_sub_cmd $AHACK_HOME "$@"
 fi
