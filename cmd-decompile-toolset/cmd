@@ -1,0 +1,12 @@
+#!/bin/zsh
+if (( $# == 1 )); then
+  echo 'arguments needed'
+  return
+fi
+
+case $1 in
+# add your codes here
+  *)
+     call_sub_cmd `dirname $0` $@
+     ;;
+esac
