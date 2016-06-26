@@ -1,0 +1,3 @@
+[submodule "cmd-decompile-toolset/cmd-src-of-apk-2/enjarify"]
+	path = cmd-decompile-toolset/cmd-src-of-apk-2/enjarify
+	url = https://github.com/google/enjarify.git

@@ -1,0 +1,19 @@
+#!/bin/zsh
+if (( $# == 0 )); then
+  echo "error - argument needed"
+  return
+elif (( $# == 1 )); then
+  local dir=/tmp/ahack/decompile/enjarify/
+  mkdir -p $dir
+  cd `dirname $0`/enjarify
+  ./enjarify.sh $1 -o $dir/enjarify.jar --force
+  cd $dir
+  return
+fi
+
+case $1 in
+# add your codes here
+  *)
+     call_sub_cmd `dirname $0` $@
+     ;;
+esac
