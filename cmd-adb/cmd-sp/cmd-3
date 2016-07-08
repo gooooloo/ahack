@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+local p=$(sp_dir_of_pkg $1)
+local p=$p$2
+if [[ ! $p == *.xml ]]; then
+  p=$p.xml
+fi
+adb shell cat $p | grep $3

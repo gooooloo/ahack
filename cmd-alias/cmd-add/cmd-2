@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+if [[ -a $aliasFile ]]; then
+  sed -i '' -e '/^'$1'=/d' $aliasFile
+fi
+echo $1'='$2 >> $aliasFile

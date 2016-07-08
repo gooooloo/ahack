@@ -13,7 +13,7 @@ comp_by_sub_cmd() {
     return
   fi
 
-  local _cmd=`dirname $sub_cmd`/_cmd
+  local _cmd=$sub_cmd/_cmd
   if [[ -a $_cmd ]] then
     shift
     shift

@@ -1,25 +1,48 @@
 #!/bin/zsh
 
-# method to call sub_cmd
-# argument 1: the absolute path of current folder
-# argument 2: the sub-cmd
-# argument 3: the arguments for sub-cmd
-# 
-# example: 'source ./call_sub_cmd /tmp/abc def x y z' will try to execute
-#   - $sub_cmd x y z
-# the $sub_cmd is determined by $AHACK_HOME/util/subcmd script
-#
+# $1 : current location
+# $2+: arguments
 call_sub_cmd() {
-  local sub_cmd=`source $AHACK_HOME/util/subcmd $1 $2`
+  local dir=$1
+  shift # now $@ are real arguments
 
-  if [[ ! -a $sub_cmd ]] then
-    echo 'no such file:' $1/$2
-    return
-  else
-    shift
-    shift
-    source $sub_cmd "$@"
+  ### echo for debug purpose only ###
+  # echo "call_sub_cmd called: " $dir $@
+  ### echo for debug purpose only ###
+
+  # 0. call cmd-mypre
+  local cmd=`echo $dir/'cmd-mypre'`
+  if [[ -a $cmd ]] then
+    source $cmd
   fi
+
+  # 1. if has argument and cmd-**/p-cmd-**/a-cmd-** exist,
+  # call cmd-**/p-cmd-**/a-cmd-**, and return
+  if (( $# > 0 )); then
+    local sub_dir=`source $AHACK_HOME/util/subcmd $dir $1`
+    if [[ -a $sub_dir ]] then
+      shift
+      call_sub_cmd $sub_dir "$@"
+      return
+    fi
+  fi
+
+  # 2. if cmd-$# exist, call it, and return
+  cmd=`echo $dir/'cmd-'$#`
+  if [[ -a $cmd ]] then
+    source $cmd "$@"
+    return
+  fi
+
+  # 3. if cmd exist, call it, and return
+  cmd=$dir/cmd
+  if [[ -a $cmd ]] then
+    source $cmd "$@"
+    return
+  fi
+
+  # 4. finally we cannot handle it, print error, and return
+  echo can not handle "$dir" "$@"
 }
 
-source `dirname $0`/cmd "$@"
+call_sub_cmd `dirname $0` "$@"

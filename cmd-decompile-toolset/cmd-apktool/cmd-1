@@ -1,0 +1,6 @@
+#!/bin/zsh
+local dir='/tmp/ahack/apktool/'
+mkdir -p $dir
+rm -rf $dir
+java -jar `dirname $0`/apktool_2.1.0.jar d $1 -o $dir
+cd $dir

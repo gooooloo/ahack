@@ -1,0 +1,4 @@
+#!/bin/zsh
+if [[ -a $aliasFile ]]; then
+  cat $aliasFile
+fi

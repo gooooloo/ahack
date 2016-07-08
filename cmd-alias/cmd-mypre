@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+local aliasFile=`pwd`/.ahack.alias
+
+function removeAlias() {
+  if [[ -a $aliasFile ]]; then
+    sed -i '' -e '/^'$1'=/d' $aliasFile
+  fi
+}

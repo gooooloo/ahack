@@ -1,8 +1,4 @@
 #!/bin/zsh
-if (( $# == 0 )); then
-  echo "error - argument needed"
-  return
-fi
 
 for i in $@; do
   removeAlias $i

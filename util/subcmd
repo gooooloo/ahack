@@ -21,11 +21,6 @@ if [[ ! -a $subdir ]] then
 fi
 if [[ ! -a $subdir ]] then
   echo ''
-fi
-
-local subcmd=$subdir/cmd
-if [[ ! -a $subcmd ]] then
-  echo ''
 else
-  echo $subcmd
+  echo $subdir
 fi

@@ -1,8 +1,4 @@
 #!/bin/zsh
-if (( $# == 0 )); then
-  cd $AHACK_HOME
-  return
-fi
 
 goto_sub_cmd() {
   local sub_cmd=`source $AHACK_HOME/util/subcmd $1 $2`
@@ -11,19 +7,10 @@ goto_sub_cmd() {
     cd $1
     return
   else
-    local sub_dir=`dirname $sub_cmd`
     shift
     shift
-    goto_sub_cmd $sub_dir "$@"
+    goto_sub_cmd $sub_cmd "$@"
   fi
 }
 
 goto_sub_cmd $AHACK_HOME "$@"
-return
-
-case $1 in
-# add your codes here
-  *)
-     call_sub_cmd `dirname $0` $@
-     ;;
-esac

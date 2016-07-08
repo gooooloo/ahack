@@ -1,0 +1,2 @@
+#!/bin/zsh
+source `dirname $0`/util/adb_common_functions.zsh

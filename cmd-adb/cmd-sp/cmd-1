@@ -1,0 +1,3 @@
+#!/bin/zsh
+local p=$(sp_dir_of_pkg $1)
+adb shell ls -l $p

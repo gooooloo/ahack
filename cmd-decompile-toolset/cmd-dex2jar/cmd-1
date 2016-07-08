@@ -1,0 +1,5 @@
+#!/bin/zsh
+local dir='/tmp/ahack/dex2jar'
+mkdir -p $dir
+cd $dir
+sh `dirname $0`/dex2jar-2.0/d2j-dex2jar.sh $1

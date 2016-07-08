@@ -1,11 +1,4 @@
 #!/bin/zsh
-if (( $# == 0 )); then
-  if [[ -a $aliasFile ]]; then
-    cat $aliasFile
-  fi
-  return
-fi
-
 showalias() {
   if [[ -a $aliasFile ]]; then
     cat $aliasFile | grep $(echo '^'$1'=')
