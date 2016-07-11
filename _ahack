@@ -9,15 +9,12 @@ typeset -A opt_args
 comp_by_sub_cmd() {
   local sub_cmd=`source $AHACK_HOME/util/subcmd $1 $2`
 
-  if [[ ! -a $sub_cmd ]] then
+  if [[ -a $sub_cmd ]] then
+    shift
+    shift
+    _foo $sub_cmd "$@"
+  else
     return
-  fi
-
-  local _cmd=$sub_cmd/_cmd
-  if [[ -a $_cmd ]] then
-    shift
-    shift
-    source $_cmd "$@"
   fi
 }
 
@@ -39,16 +36,26 @@ _comp_a_cmd() {
 
 comp_with_sub_cmds() {
   local subCmds; subCmds=()
-  
+
   _comp_a_cmd $1 'cmd-' 4
   _comp_a_cmd $1 'p-cmd-' 6
   _comp_a_cmd $1 'a-cmd-' 6
 
-  shift
-  subCmds=($@ $subCmds)
-
   _describe -t subCmds 'command' subCmds && ret=0
 }
- 
+
+_foo() {
+  local _cmd=$1/_cmd
+  if [[ -a $_cmd ]]; then
+    shift
+    source $_cmd "$@"
+  elif (( $# > 1 )); then
+    comp_by_sub_cmd "$@"
+  else
+    comp_with_sub_cmds $1
+  fi
+}
+
 local n=`expr ${#words} - 1`
-source `dirname $0`/_cmd $words[2,n]
+_foo `dirname $0` $words[2,n]
+
