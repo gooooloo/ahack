@@ -1,0 +1,2 @@
+#!/bin/zsh
+python `dirname $0`/pidcat.py "$@"
