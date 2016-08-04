@@ -4,35 +4,12 @@ newFiles() {
   local dir=$1
 
   local desc=$2
-  echo $desc > $1/desc
+  echo $desc > $dir/desc
 
-  local cmd=$1/cmd
+  local cmd=$dir/cmd
   echo '#!/bin/zsh'                        > $cmd
-  echo 'if (( $# == 0 )); then'           >> $cmd
-  echo '  echo "error - argument needed"' >> $cmd
-  echo '  return'                         >> $cmd
-  echo 'fi'                               >> $cmd
-  echo ''                                 >> $cmd
-  echo 'case $1 in'                       >> $cmd
-  echo '# add your codes here'            >> $cmd
-  echo '  *)'                             >> $cmd
-  echo '     call_sub_cmd `dirname $0` $@'      >> $cmd
-  echo '     ;;'                          >> $cmd
-  echo 'esac'                             >> $cmd
 
-  local _cmd=$1/_cmd
-  echo '#!/bin/zsh'                                 > $_cmd
-  echo ''                                          >> $_cmd
-  echo 'if (( $# == 0 )); then'                    >> $_cmd
-  echo '  local myCmds; myCmds=()'                 >> $_cmd
-  echo ''                                          >> $_cmd
-  echo '  # TODO:add your myCmds here like'        >> $_cmd
-  echo '  # myCmds=('hello:world' $myCmds)'        >> $_cmd
-  echo ''                                          >> $_cmd
-  echo '  comp_with_sub_cmds `dirname $0` $myCmds' >> $_cmd
-  echo 'else'                                      >> $_cmd
-  echo '  comp_by_sub_cmd `dirname $0` "$@"'       >> $_cmd
-  echo 'fi'                                        >> $_cmd
+  cd $dir
 }
 
 if [[ ! $1 == '--mode' ]]; then
