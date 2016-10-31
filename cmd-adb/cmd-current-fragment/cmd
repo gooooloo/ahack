@@ -1,0 +1,2 @@
+#!/bin/zsh
+adb shell dumpsys activity `adb shell "dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'" | cut -d'/' -f1 | rev | cut -d' ' -f1 | rev | head -1`| grep '#0' | head -1
