@@ -1,0 +1,13 @@
+#!/bin/zsh
+function build_and_push_root_certificate() {
+    hash=/tmp/`openssl x509 -inform PEM -subject_hash -in $1 | head -1`.0
+    cat $1 > $hash
+    openssl x509 -inform PEM -text -in $1 -out /dev/null >> $hash
+
+    adb root
+    adb remount
+    adb push  $hash /system/etc/security/cacerts/
+    adb reboot
+
+    rm $hash
+}
